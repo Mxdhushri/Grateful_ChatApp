@@ -17,6 +17,8 @@ app.use(cors({
     credentials: true, //to enable cookies
 }))
 
+app.use("/uploads/profiles", express.static("uploads/profiles"))// day 10- we tell express server that if user comes to this route and uploads image then we serve asset from directory to request
+
 app.use(cookieParser()) // request,body,response 
 app.use(express.json()) //inbuilt middleware .ensures that body is in json format
 app.use("/api/auth", authRoutes);
