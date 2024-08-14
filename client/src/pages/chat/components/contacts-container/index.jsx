@@ -1,3 +1,6 @@
+//pura wrapper of Grateful 
+import NewDM from "./components/new-dm";
+import ProfileInfo from "./components/profile-info";
 
 const ContactsContainer = () => {
   return (
@@ -8,6 +11,7 @@ const ContactsContainer = () => {
         <div className="my-5">
           <div className="flex items-center justify-between pr-10">
             <Title text="Direct Messages"/>
+            <NewDM />
         </div>
       </div>
       <div className="my-5">
@@ -15,6 +19,7 @@ const ContactsContainer = () => {
             <Title text="Groups" />
         </div>
       </div>
+      <ProfileInfo />
     </div>
   )
 }

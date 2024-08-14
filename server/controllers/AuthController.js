@@ -1,3 +1,5 @@
+//define controllers (logic) 
+
 import { compare } from "bcrypt";
 import User from "../models/UserModel.js";
 import jwt from "jsonwebtoken"
@@ -13,7 +15,7 @@ export const signup = async (request, response, next) => {
     try {
         const { email, password } = request.body; //we get email,password from body
         if (!email || !password) {
-            return response.status(400).send("Email and Password is required.")
+            return response.status(400).send("Email and Password is required.") //agar email nahi toh ye return karo
         }
         const user = await User.create({ email, password });
         response.cookie("jwt", createToken(email, user.id), {
@@ -44,7 +46,7 @@ export const login = async (request, response, next) => {
         if(!user){
             return response.status(404).send("User with the given email not found.")
         }
-        const auth=await compare(password, user.password);
+        const auth=await compare(password, user.password); //compare karo jo password user nai daala and password already present
         if(!auth){
             return response.status(400).send("Passowrd is incorrect.")
         }
@@ -54,7 +56,8 @@ export const login = async (request, response, next) => {
             sameSite: "None",
         }); //converting token to cookie
         return response.status(200).json({
-            user: {
+            user: { 
+                //easy to debug
                 id: user.id,
                 email: user.email,
                 profileSetup: user.profileSetup,
@@ -152,3 +155,14 @@ export const removeProfileImage = async (request, response, next) => {
         return response.status(500).send("Internal Server Error");
     }
 }
+
+export const logout = async (request, response, next) => {
+    try {
+        response.cookie("jwt","",{maxAge:1, secure:true,sameSite:"None"}) //1 microsecond , "" cookie becomes empty
+        return response.status(200).send("Logout successfully.")
+    } catch (error) {
+        console.log({ error });
+        return response.status(500).send("Internal Server Error");
+    }
+}
+

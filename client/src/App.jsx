@@ -1,5 +1,5 @@
 import React, { Children, useEffect, useState } from 'react'
-import { BrowserRouter, Routes , Route, Navigate } from 'react-router-dom' // components and package
+import { BrowserRouter, Routes , Route, Navigate } from 'react-router-dom' // components from package
 import {Button}  from '@/components/ui/button' //we imported this from components
 import Auth from './pages/auth'
 import Chat from './pages/chat'
