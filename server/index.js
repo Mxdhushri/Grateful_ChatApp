@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser"
 import mongoose from "mongoose"
 import authRoutes from "./routes/AuthRoutes.js"
 import contactsRoutes from "./routes/ContactRoutes.js"
+import setupSocket from "./socket.js"
 
 dotenv.config() //All the environment varibles in env file will be inside process.env 
 
@@ -28,6 +29,8 @@ app.use("/api/contacts", contactsRoutes);
 const server = app.listen(port, () => {
     console.log(`Server is running at http://http:localhost:${port}`)
 })
+
+setupSocket(server)// above server function
 
 mongoose.connect(databaseURL).then(() => {
     console.log("datbase connection successful")
