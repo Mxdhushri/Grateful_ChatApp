@@ -1,8 +1,25 @@
 //pura wrapper of Grateful 
+import { useEffect } from "react";
 import NewDM from "./components/new-dm";
 import ProfileInfo from "./components/profile-info";
+import { apiClient } from "@/lib/api-client";
+import {GET_DM_CONTACTS_ROUTES } from "@/utils/constants";
+import { useAppStore } from "@/store";
+import ContactList from "@/components/contact-list";
 
 const ContactsContainer = () => {
+const {setDirectMessagesContacts, directMessagesContacts} = useAppStore()
+
+  useEffect(() => {
+    const getContacts = async() => {
+      const response = await apiClient.get(GET_DM_CONTACTS_ROUTES,{withCredentials:true})
+      if(response.data.contacts){
+        setDirectMessagesContacts(response.data.contacts) //fetch karo
+      }
+    }
+
+    getContacts()
+  },[])
   return (
     <div className="relative md:w-[35vw] lg:w-[30vw] xl:w-[20vw] bg-[#1b1c24] border-r-2 border-[#2f303b] w-full">
       <div className="pt-3">
@@ -13,6 +30,9 @@ const ContactsContainer = () => {
             <Title text="Direct Messages"/>
             <NewDM />
         </div>
+      </div>
+      <div className="max-h-[38vh] overflow-y-auto scrollbar-hidden">
+        <ContactList contacts={directMessagesContacts}/> 
       </div>
       <div className="my-5">
           <div className="flex items-center justify-between pr-10">
