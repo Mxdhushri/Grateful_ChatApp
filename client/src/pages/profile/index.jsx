@@ -43,6 +43,7 @@ import { ADD_PROFILE_IMAGE_ROUTE, HOST, REMOVE_PROFILE_IMAGE_ROUTE, UPDATE_PROFI
     }
     return true
   }
+  
   const saveChanges = async() =>{
     if(validateProfile())
     {
@@ -50,7 +51,7 @@ import { ADD_PROFILE_IMAGE_ROUTE, HOST, REMOVE_PROFILE_IMAGE_ROUTE, UPDATE_PROFI
         const response = await apiClient.post(UPDATE_PROFILE_ROUTE, {firstName, lastName, color:selectedColor}, {withCredentials:true}) // caaling API backend //credentials->for
         if(response.status ===200 && response.data){
           setUserInfo({...response.data})
-          toast.success("Profile updated successfully.")
+          toast.success("Profile updated successfully.", {duration: 5000})
           navigate("/chat") // next backend mai aata
         }
       } catch(error){
@@ -63,7 +64,7 @@ import { ADD_PROFILE_IMAGE_ROUTE, HOST, REMOVE_PROFILE_IMAGE_ROUTE, UPDATE_PROFI
     if(userInfo.profileSetup){
       navigate("/chat")
     }else{
-      toast.error("Please setup profile.")
+      toast.error("Please setup profile.", {duration: 5000})
     }
   }
 
@@ -101,6 +102,7 @@ import { ADD_PROFILE_IMAGE_ROUTE, HOST, REMOVE_PROFILE_IMAGE_ROUTE, UPDATE_PROFI
       console.log(error);
     }
   }
+  
     return (
       <div className="bg-[#1b1c24] h-[100vh] flex items-center justify-center flex-col gap-10">
         <div className="flex flex-col gap-10 w-[80vw] md:w-max">

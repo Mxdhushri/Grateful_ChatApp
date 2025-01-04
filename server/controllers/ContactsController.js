@@ -1,93 +1,3 @@
-// import mongoose from "mongoose"
-// import User from "../models/UserModel.js"
-// import Message from "../models/MessagesModel.js"
-
-// export const searchContacts = async (request, response, next) => {
-//     try {
-//         const {searchTerm} =request.body
-//         if(searchTerm===undefined || searchTerm===null){
-//             return response.status(400).send("Searchterm is undefined.")
-//         }
-//         const sanitizedSearchTerm = searchTerm.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")//special characters removeal when we search contacts CALLED REJEX 
-//         const regex = new RegExp(sanitizedSearchTerm,"i")
-//         const contacts = await User.find({
-//             $and:[{_id:{$ne:request.userId}}, {//same name should no equal
-//                 $or:[{firstName:regex},{lastName:regex},{email:regex}]
-//             }],
-//         })
-//         return response.status(200).json({contacts})
-
-
-//         return response.status(200).send("Logout successful.")
-//     } catch (error) {
-//         console.log({ error });
-//         return response.status(500).send("Internal Server Error");
-//     }
-// }
-
-// //we want to bring all the contacts to the left pannel
-// export const getContactsForDMList = async (request, response, next) => {
-//     try {
-//         let {userId} = request
-//         userId = new mongoose.Types.ObjectId(userId)
-
-//         const contacts = await Message.aggregate([
-//             {
-//                 $match: {
-//                     $or: [{sender:userId},{recipient:userId}]
-//                 }
-//             },
-//             {
-//                 $sort: {timestamp: -1}// 6:00pm msg appears before 5:00pm
-//             },
-//             {
-//                 $group: {
-//                     _id:{
-//                         $cond: {
-//                             if: {$eq: ["$sender", userId]},
-//                             then: "$recipient",
-//                             else: "$sender"
-//                         },
-//                     },
-//                     lastMessageTime: {$first: "$timestamp"}
-//                 }
-//             },
-//             {
-//                 $lookup: {
-//                     from: "users" ,
-//                     localField: "_id",
-//                     foreignField: "_id",
-//                     as: "contactInfo"
-//                 }
-//             },
-//             {
-//                 $unwind: "$contactInfo"
-//             },
-//             {
-//                 $project:{
-//                     _id:1,
-//                     lastMessageTime:1,
-//                     email: "$contactInfo.firstName",
-//                     firstName:"$contactInfo.firstName",
-//                     lastName: "$contactInfo.lastName",
-//                     image:"$contactInfo.image",
-//                     color:"$contactInfo.color"
-//                 }
-//             },
-//             {
-//                 $sort:{lastMessageTime: -1}
-//             }
-//         ])
-
-//         return response.status(200).json({contacts})
-//         return response.status(200).send("Logout successful.")
-//     } catch (error) {
-//         console.log({ error });
-//         return response.status(500).send("Internal Server Error");
-//     }
-// }
-
-
 import mongoose from "mongoose";
 import User from "../models/UserModel.js"
 import Message from "../models/MessagesModel.js";
@@ -99,18 +9,16 @@ export const searchContacts = async (request, response, next) => {
         return response.status(400).send("searchTerm is undefined.")
       }
       
-      const sanitizedSearchTerm = searchTerm.replace(/[.*+?^${}()|[\]\\]/g,"\\$&") //regex to remove special characters
+      const sanitizedSearchTerm = searchTerm.replace(/[.*+?^${}()|[\]\\]/g,"\\$&") //REGEX to remove special characters when we search contacts
       const regex = new RegExp(sanitizedSearchTerm,"i")
       const contacts = await User.find({
-        $and:[{_id:{$ne:request.userId}},{
+        $and:[{_id:{$ne:request.userId}},{ //same name should no equal
             $or:[{firstName:regex},{lastName:regex},{email:regex}]
         }],
       })
 
       return response.status(200).json({contacts})
 
-
-      return response.status(200).send("Logout successfull.")
     } catch (error) {
       console.log({ error });
       return response.status(500).send("Internal Server Error");
@@ -166,13 +74,28 @@ export const searchContacts = async (request, response, next) => {
           }
         },
         {
-          $sort:{lastMessageTime:-1}
+          $sort:{lastMessageTime:-1}// 6:00pm msg appears before 5:00pm
         }
       ])
 
       return response.status(200).json({contacts})
 
-      return response.status(200).send("Logout successfull.")
+    } catch (error) {
+      console.log({ error });
+      return response.status(500).send("Internal Server Error");
+    }
+  };
+
+  export const getAllContacts = async (request, response, next) => {
+    try {
+      const users = await User.find({_id: {$ne: request.userId}}, "firstName lastName _id email")
+      const contacts = users.map((user) => ({
+        label: user.firstName ? `${user.firstName} ${user.lastName}` : user.email,
+        value: user._id,
+      }))
+
+      return response.status(200).json({contacts})
+
     } catch (error) {
       console.log({ error });
       return response.status(500).send("Internal Server Error");

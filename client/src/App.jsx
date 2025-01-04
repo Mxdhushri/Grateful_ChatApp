@@ -7,6 +7,11 @@ import Profile from './pages/profile'
 import { useAppStore } from './store'
 import { apiClient } from './lib/api-client'
 import { GET_USER_INFO } from './utils/constants'
+import Meeting from './components/Meeting'
+import Room from './components/Room'
+import Pay from './components/Pay'
+import OTPVerification from './components/OTPVerification'
+
 
 const PrivateRoute = ({children}) => {
   const {userInfo} = useAppStore();
@@ -54,13 +59,18 @@ const App = () => {
       Loading...
       </div>
   }
+
   return (
         /*in react we write sabkuch(page ui-card,button,form) in div */
     <BrowserRouter>
       <Routes>
-        < Route path="/auth" element={<AuthRoute> <Auth/> </AuthRoute>} />
+        < Route path="/auth" element={<Auth/>} />
+        <Route path="/verifyotp" element={<OTPVerification />} />
         < Route path="/chat" element={<PrivateRoute> <Chat/> </PrivateRoute>} />
         < Route path="/profile" element={<PrivateRoute> <Profile/> </PrivateRoute>} />
+        <Route path="/meeting" element={<PrivateRoute> <Meeting /> </PrivateRoute>} />
+        <Route path="/pay" element={<PrivateRoute> <Pay /> </PrivateRoute>} />  {/* jo banaya hai na, vo import */}
+        <Route path="/room/:roomId" element={<PrivateRoute> <Room/> </PrivateRoute>} />
         < Route path="*" element={<Navigate to="/auth"/>} />
       </Routes>
     </BrowserRouter>

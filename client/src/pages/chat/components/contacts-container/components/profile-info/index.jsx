@@ -1,4 +1,5 @@
 import { Avatar, AvatarImage } from "@/components/ui/avatar" //always components se import
+import { toast } from "react-hot-toast"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { getColor } from "@/lib/utils"
 import { useAppStore } from "@/store"
@@ -15,6 +16,7 @@ const ProfileInfo = () => {
     try{
       const response= await apiClient.post(LOGOUT_ROUTE,{},{withCredentials:true}) //integration of frontend backend and credentila for cookie
       if(response.status===200){
+        toast.success("Logout successful")
         navigate("/auth") //goes to first auth page after logout
         setUserInfo(null)
       }

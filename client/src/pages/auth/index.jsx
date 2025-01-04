@@ -54,6 +54,7 @@ const Auth = () => {
             const response= await apiClient.post(LOGIN_ROUTE, {email,password},{withCredentials: true})
             if(response.data.user.id){
                 setUserInfo(response.data.user)
+                toast.success("Login Successfully" , {duration: 5000})
                 if(response.data.user.profileSetup)
                     navigate("/chat")
                 else
@@ -67,12 +68,12 @@ const Auth = () => {
             //integration started
             const response = await apiClient.post(SIGNUP_ROUTE, {email, password},{withCredentials: true})
             if(response.status===201){
+                toast.success("OTP sent successfully", {duration: 5000})
                 setUserInfo(response.data.user)
-                navigate("/profile")
+                navigate("/verifyotp", {state:{email}})
             }
             console.log({response}); 
         }
-        
     }
     return (
         <div className="h-[100vh] w-[100vw] flex items-center justify-center">

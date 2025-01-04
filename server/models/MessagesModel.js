@@ -2,14 +2,14 @@ import mongoose from "mongoose"; //Automatically imported and mongoose is librar
 
 const messageSchema = new mongoose.Schema({
     sender: {
-        type: mongoose.Schema.Types.ObjectId, //user id
+        type: mongoose.Schema.Types.ObjectId, //user id [sender id]
         ref: "Users",// prev model user
         required: true
     },
     recipient: {
-        type: mongoose.Schema.Types.ObjectId, //user id it is not of string type
+        type: mongoose.Schema.Types.ObjectId, //user id it is not of string type [recipient id]
         ref: "Users",// prev model user
-        required: true
+        required: false
     },
     messageType: {
         type: String,
