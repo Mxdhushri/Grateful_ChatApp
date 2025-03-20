@@ -16,7 +16,7 @@ const app = express() //REST object
 const port = process.env.PORT || 8000
 const databaseURL = process.env.DATABASE_URL
 
-const allowedOrigins = ['https://grateful-chat-app.vercel.app', 'http://localhost:5173'];
+const allowedOrigins = ['https://madhushri-ka-grateful-chat-app.vercel.app/', 'http://localhost:5173'];
 
 app.use(
     cors({
