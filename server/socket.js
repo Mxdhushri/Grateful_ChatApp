@@ -2,12 +2,12 @@ import {Server as socketIOServer} from "socket.io"
 import Message from "./models/MessagesModel.js"
 import Channel from "./models/ChannelModel.js";
 
-const allowedOrigins = ['https://greatful-chat-app.vercel.app', 'http://localhost:5173'];
+const allowedOrigins = ['https://grateful-chat-app.vercel.app', 'http://localhost:5173'];
 
 const setupSocket = (server) =>{
     const io = new socketIOServer(server,{
         cors: {
-            origin: process.env.ORIGIN,
+            origin: allowedOrigins,
             methods: ["GET" , "POST"],
             credentials:true,
         }
