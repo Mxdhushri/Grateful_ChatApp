@@ -27,7 +27,7 @@ export const SocketProvider = ({children}) => {
 
             const handleReceiveMessage =(message) =>{
                 const {selectedChatData, selectedChatType, addMessage, addContactsInDMContacts} =useAppStore.getState ()
-                if(selectedChatData !== undefined && (selectedChatData._id === message.sender._id || selectedChatData._id === message.recipient._id)){
+                if(selectedChatType !== undefined && (selectedChatData._id === message.sender._id || selectedChatData._id === message.recipient._id)){
                     // current chat jiske sath chalu usko hi message jata hai not anyone else
                     console.log("Message Recieved", message);
                     addMessage(message)
