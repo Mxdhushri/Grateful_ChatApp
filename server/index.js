@@ -18,7 +18,7 @@ const databaseURL = process.env.DATABASE_URL
 
 app.use(
     cors({
-    origin: [process.env.ORIGIN], //from where we get request. As origin in env file has vite ka port
+    origin: '*', //from where we get request. As origin in env file has vite ka port
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"], //rest api methods like getting data, submitting data, delete data etc 
     credentials: true, //to enable cookies
 })
