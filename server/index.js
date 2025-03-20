@@ -16,9 +16,11 @@ const app = express() //REST object
 const port = process.env.PORT || 8000
 const databaseURL = process.env.DATABASE_URL
 
+const allowedOrigins = ['https://grateful-chat-app.vercel.app', 'http://localhost:5173'];
+
 app.use(
     cors({
-    origin: '*', //from where we get request. As origin in env file has vite ka port
+    origin: allowedOrigins, //from where we get request. As origin in env file has vite ka port
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"], //rest api methods like getting data, submitting data, delete data etc 
     credentials: true, //to enable cookies
 })
